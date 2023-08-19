@@ -10,6 +10,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.pagerTabIndicatorOffset
+import com.google.accompanist.pager.rememberPagerState
 
 @Composable
 fun AppTabBar(
@@ -25,6 +29,7 @@ fun AppTabBar(
     }
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AppTabs(
     modifier: Modifier = Modifier,
@@ -32,14 +37,19 @@ fun AppTabs(
     tabSelected: HomeTab,
     onTabSelected: (HomeTab) -> Unit
 ) {
+    val pagerState = rememberPagerState()
     TabRow(
         selectedTabIndex = tabSelected.ordinal,
         modifier = modifier,
+        containerColor = Color(0xFF018786),
+        contentColor = Color.White,
         indicator = {
             TabRowDefaults.Indicator(
-                Modifier.tabIndicatorOffset(it[tabSelected.ordinal])
+                Modifier
+                    .tabIndicatorOffset(it[tabSelected.ordinal])
             )
-        }, divider = {}
+        },
+        divider = {}
 
     ) {
         titles.forEachIndexed { index, title ->

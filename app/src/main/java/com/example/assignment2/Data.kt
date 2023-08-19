@@ -24,50 +24,56 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 enum class HomeTab {
-    CHATS,
-    STATUS,
-    CALLS
+    Chats,
+    Status,
+    Calls
 }
+private var chatIDGenerator = 6
+data class ChatInfo(val chatName:String,val imageID:Int,val chatID:Int,val time:String)
 
-data class ChatInfo(val chatName:String,val imageID:Int,val prevMessage:String = "",val chatID:Int)
 
-val chatList = listOf(
+val chatList = mutableListOf(
     ChatInfo(
         "Ved Vitthal",
         R.drawable.joker,
-        "Kaha hai",
-        0
+        0,
+        "12:23 PM"
     ),ChatInfo(
         "Himanshu",
         R.drawable.joker,
-        "Saturday Chill",
-        1
+        1,
+        "10:55 AM"
     ),ChatInfo(
         "Vishal",
         R.drawable.joker,
-        "Hardcoder",
-        2
+        2,
+        "12:33 AM"
     ),ChatInfo(
         "Himanshu Patidar",
         R.drawable.joker,
-        "Ethical Hacker",
-        3
+        3,
+        "Yesterday"
     ),ChatInfo(
         "Piyush Tiwari",
         R.drawable.tyrion,
-        "Gm",
-        4
+        4,
+        "Yesterday"
     ),ChatInfo(
         "Pranjal",
         R.drawable.tyrion,
-        "Gm",
-        5
-    )
+        5,
+        "13/08/23"
+    ),ChatInfo(
+        "Prerak",
+        R.drawable.tyrion,
+        6,
+        "12/08/23"
+    ),
 )
 
-data class Chats(val message:String?=null,val isUser:Boolean = false)
+data class Chats(val message:String,val isUser:Boolean = false)
 
-val list0 = mutableListOf(
+val list0 = listOf(
     Chats(
         "Kaisa Hai",
         false
@@ -82,7 +88,7 @@ val list0 = mutableListOf(
         true
     )
 )
-val list1 = mutableListOf(
+val list1 = listOf(
     Chats(
         "Hi",
         false
@@ -97,7 +103,7 @@ val list1 = mutableListOf(
         true
     )
 )
-val list2 = mutableListOf(
+val list2 = listOf(
     Chats(
         "Hey",
         false
@@ -112,7 +118,7 @@ val list2 = mutableListOf(
         true
     )
 )
-val list3 = mutableListOf(
+val list3 = listOf(
     Chats(
         "Hello",
         false
@@ -127,7 +133,7 @@ val list3 = mutableListOf(
         true
     )
 )
-val list4 = mutableListOf(
+val list4 = listOf(
     Chats(
         "Kaha pr hai",
         false
@@ -154,8 +160,8 @@ val list4 = mutableListOf(
         true
     )
 )
-val list:MutableList<MutableList<Chats>> = mutableListOf(list0, list1, list2, list3, list4)
-var chats: MutableMap<Int,List<Chats>> = mutableMapOf()
+val list:List<List<Chats>> = listOf(list0, list1, list2, list3, list4)
+val chats: MutableMap<Int,List<Chats>> = mutableMapOf()
 
 fun setChat(){
     var counter = 0
@@ -165,75 +171,3 @@ fun setChat(){
     }
 }
 
-@Composable
-fun MyMessages(message: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-        ,horizontalArrangement = Arrangement.End
-    ) {
-        Column(
-            Modifier
-                .padding(horizontal = 8.dp)
-                .clip(
-                    RoundedCornerShape(6.dp)
-                )
-
-        ) {
-
-            Text(
-                text = message,
-                fontWeight = FontWeight.Medium,
-                fontSize = 10.sp,
-                modifier = Modifier.padding(horizontal = 4.dp),
-            )
-
-        }
-    }
-}
-
-@Composable
-fun SenderMessage(chatName: String?,imageID: Int,message: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-    ) {
-        Image(
-            painter = painterResource(id = imageID.toInt()),
-            contentDescription = null,
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(20.dp),
-            contentScale = ContentScale.Crop
-        )
-        Column(
-            Modifier
-                .padding(horizontal = 8.dp)
-                .clip(
-                    RoundedCornerShape(6.dp)
-                )
-//                            .background(Color.Black)
-
-        ) {
-            if (chatName != null) {
-                Text(
-                    text = chatName,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 8.sp,
-                    //                            color = Color.White
-                )
-            }
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(
-                text = message,
-                fontWeight = FontWeight.Medium,
-                fontSize = 10.sp,
-                modifier = Modifier.padding(horizontal = 4.dp),
-//                            color = Color.White
-            )
-
-        }
-    }
-}

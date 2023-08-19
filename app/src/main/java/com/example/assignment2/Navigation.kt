@@ -11,13 +11,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.assignment2.statusBar.StatusViewModel
 
 @Composable
-fun Navigation() {
+fun Navigation(statusViewModel: StatusViewModel) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.MainScreen.route) {
         composable(Screen.MainScreen.route) {
-            HomeScreen(navController)
+            HomeScreen(navController, statusViewModel = statusViewModel)
         }
         composable(Screen.ChatDetailScreen.route + "/{chatID}", arguments = listOf(
             navArgument("chatID") {

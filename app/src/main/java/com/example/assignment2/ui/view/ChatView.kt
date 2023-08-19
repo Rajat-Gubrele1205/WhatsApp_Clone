@@ -1,13 +1,8 @@
 package com.example.assignment2.ui.view
 
-import android.content.Intent
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.MainThread
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,45 +13,38 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.ui.res.painterResource
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.ScaleFactor
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.example.assignment2.MainActivity
-import com.example.assignment2.R
 import com.example.assignment2.Screen
 import com.example.assignment2.chatList
+import com.example.assignment2.chats
+import com.example.assignment2.setChat
 
 
 @Composable
 fun ChatView(navController: NavController) {
+
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
+
         val length = chatList.size
         items(length) {
+            setChat()
+            val size = chats[it]?.size ?: 0
             val chatName = chatList[it].chatName
             val imageID = chatList[it].imageID
-            val prevMessage = chatList[it].prevMessage
+            val prevMessage = chats[it]?.get(size - 1)?.message ?: ""
             val chatID = chatList[it].chatID
+            val chatTime = chatList[it].time
             Row(
                 modifier = Modifier
                     .padding(16.dp)
@@ -71,13 +59,20 @@ fun ChatView(navController: NavController) {
                     contentScale = ContentScale.Crop
                 )
                 Column(Modifier.padding(horizontal = 8.dp, vertical = 8.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
 
-                    Text(
-                        text = chatName,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 17.sp,
-                        //color = Color.White
-                    )
+
+                        Text(
+                            text = chatName,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 17.sp,
+                            //color = Color.White
+                        )
+                        Text(text = chatTime, textAlign = TextAlign.End)
+                    }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = prevMessage,
@@ -87,10 +82,56 @@ fun ChatView(navController: NavController) {
                         //color = Color.White
                     )
 
+
                 }
+
+
             }
             //Divider(color = Color.Black)
 
         }
     }
 }
+
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun AddChatDialog(
+//    state: ChatState,
+//    onEvent: (ChatEvent) -> Unit,
+//    modifier: Modifier = Modifier
+//) {
+//    AlertDialog(
+//        modifier = modifier,
+//        onDismissRequest = { onEvent(ChatEvent.hideDialog) },
+//        title = { Text(text = "Add Chat") },
+//        text = {
+//            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+//                TextField(
+//                    value = state.chatName,
+//                    onValueChange = { onEvent(ChatEvent.SetChatName(it)) },
+//                    placeholder = {
+//                        Text(text = "ChatName")
+//                    }
+//                )
+//                TextField(
+//                    value = state.imageID,
+//                    onValueChange = { onEvent(ChatEvent.SetChatImage(it.toInt())) },
+//                    placeholder = {
+//                        Text(text = "ChatName")
+//                    }
+//                )
+//            }
+//        },
+//        confirmButton = {
+//            TextButton(onClick = { onEvent(ChatEvent.SaveChat) }) {
+//                Text(text = "Save")
+//            }
+//        }
+//    )
+//}
+
+//@Preview(showBackground = true)
+//@Composable
+//fun Preview() {
+//    ChatView(navController = rememberNavController())
+//}
